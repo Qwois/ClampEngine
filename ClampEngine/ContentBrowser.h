@@ -12,5 +12,7 @@ struct Asset {
 };
 
 void DrawContentBrowser();
+void SaveAssets();
+void LoadAssets();
 
 #endif
