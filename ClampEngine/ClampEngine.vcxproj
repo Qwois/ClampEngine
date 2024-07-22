@@ -78,6 +78,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,6 +147,8 @@
     <ClInclude Include="extras\IconsFontAwesome6.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="imgui_impl_raylib.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
+    <ClInclude Include="ProjectManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="resource2.h" />

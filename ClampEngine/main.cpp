@@ -8,17 +8,26 @@
 #include <iostream>
 #include "ClampEngine.cpp"
 #include "ResourceManager.h"
+#include "ProjectManager.h"
+
 
 #define MIN_WINDOW_WIDTH 100
 #define MIN_WINDOW_HEIGHT 100
 #define SIZE_PIXELS 16.0f
 
-
 int main(void) {
     bool cameraLocked = false;
     float f = 0.0f;
 
+    RECT rect;
+    rect.left = 10;
+    rect.top = 40;
+    rect.right = 30;
+    rect.bottom = 60; // adjust these values as needed
+
     ResourceManager resourceManager;
+    ProjectManager projectManager;
+    Project currentProject;
 
     // Initialize with a reasonable default size, ensuring the application is windowed
     windowWidth = 1600;
@@ -44,6 +53,9 @@ int main(void) {
     if (scenes.empty()) {
         CreateNewScene();
     }
+
+    // Загрузить проекты
+    LoadAssets();
 
     while (!WindowShouldClose()) {
         // Update the window width and height dynamically
@@ -88,8 +100,10 @@ int main(void) {
         // Clear background with the selected color
         ClearBackground(backgroundColor);
 
+        HDC hdc = GetDC(NULL); // get the device context for the entire screen
         if (scenes.empty()) {
-            DrawText("No scenes available. Click the + tab to create a new scene.", 10, 40, 20, DARKGRAY);
+            DrawText(hdc, L"No scenes available. Click the + tab to create a new scene.", -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER); // note the changes
+            ReleaseDC(NULL, hdc); // release the device context
         }
         else {
             DrawTabs();
@@ -143,7 +157,7 @@ int main(void) {
         int selected = 0;
         ImGui::RadioButton("Window Mode", &selected, 0);
         ImGui::SameLine();
-        ImGui::RadioButton("Fullscrean Mode", &selected, 1);
+        ImGui::RadioButton("Fullscreen Mode", &selected, 1);
 
         // Dropdown (Tree nodes)
         if (ImGui::TreeNode("Settings")) {
@@ -184,12 +198,37 @@ int main(void) {
 
         DrawContentBrowser();
 
+        // Add toolbar
+        if (ImGui::BeginMainMenuBar()) {
+            if (ImGui::BeginMenu("File")) {
+                if (ImGui::MenuItem("Create Project")) {
+                    // Implement a function to get project name and path from user input
+                    std::string name = "New Project";  // Get this from user input
+                    std::string path = "./projects";   // Get this from a file dialog or input
+                    currentProject = projectManager.CreateProject(name, path);
+                }
+                if (ImGui::MenuItem("Save Project")) {
+                    projectManager.SaveProjectConfig(currentProject);
+                }
+                if (ImGui::MenuItem("Load Project")) {
+                    // Implement a function to get project path from user input
+                    std::string path = "./projects"; // Get this from a file dialog
+                    currentProject = projectManager.LoadProject(path);
+                }
+                ImGui::EndMenu();
+            }
+            ImGui::EndMainMenuBar();
+        }
+
         rlImGuiEnd();
 
         EndDrawing();
     }
     // Cleanup ImGui context
     rlImGuiShutdown();
+
+    // Сохранить проекты перед выходом
+    SaveAssets();
 
     CloseWindow(); // Close the window and OpenGL context
 

@@ -3,18 +3,50 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-#include <fstream> 
+#include <fstream>
 #include <raylib.h>
 
+// Начинаем с пустого вектора assets
+std::vector<Asset> assets = {};
 
-std::vector<Asset> assets = {
-    {"Model1.obj", "3D Model"},
-    {"Texture1.png", "Texture"},
-    {"Material1.mat", "Material"},
-    {"Script1.lua", "Lua Script"},
-    {"Animation1.anim", "Animation"}
-};
+// Переменные для отслеживания открытого файла
+bool isLuaEditorOpen = false;
+std::string currentEditingFilePath = "";
+char textBuffer[1024 * 16] = { 0 }; // Буфер для редактирования
 
+void SaveAssets() {
+    std::ofstream outFile("project_files.txt");
+    if (outFile.is_open()) {
+        for (const auto& asset : assets) {
+            outFile << asset.name << ";" << asset.type << "\n";
+        }
+        outFile.close();
+        std::cout << "Project saved.\n";
+    }
+    else {
+        std::cerr << "Failed to save project.\n";
+    }
+}
+
+void LoadAssets() {
+    std::ifstream inFile("project_files.txt");
+    if (inFile.is_open()) {
+        std::string line;
+        while (std::getline(inFile, line)) {
+            size_t delimiterPos = line.find(';');
+            if (delimiterPos != std::string::npos) {
+                std::string name = line.substr(0, delimiterPos);
+                std::string type = line.substr(delimiterPos + 1);
+                assets.push_back({ name, type });
+            }
+        }
+        inFile.close();
+        std::cout << "Project loaded.\n";
+    }
+    else {
+        std::cerr << "No saved project found.\n";
+    }
+}
 
 void EditFile(const std::string& filePath) {
     if (!FileExists(filePath.c_str())) {
@@ -35,24 +67,35 @@ void EditFile(const std::string& filePath) {
     }
     file.close();
 
-
-    static char textBuffer[1024 * 16]; 
-
+    // Скопировать содержимое файла в textBuffer
     strncpy_s(textBuffer, sizeof(textBuffer), fileContent.c_str(), _TRUNCATE);
 
-    if (ImGui::Begin("Lua Script Editor", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        if (ImGui::InputTextMultiline("##script", textBuffer, sizeof(textBuffer), ImVec2(-1.0f, ImGui::GetTextLineHeight() * 16))) {
-            std::ofstream outFile(filePath);
+    // Установить флаг открытия редактора и сохранить путь к файлу
+    isLuaEditorOpen = true;
+    currentEditingFilePath = filePath;
+}
+
+void DrawLuaEditor() {
+    if (!isLuaEditorOpen) return; // Если редактор не открыт, выходим
+
+    ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver); // Начальный размер окна
+
+    if (ImGui::Begin("Lua Script Editor", &isLuaEditorOpen)) {
+        ImGui::InputTextMultiline("##script", textBuffer, sizeof(textBuffer), ImVec2(-1.0f, -1.0f));
+
+        if (ImGui::Button("Save")) {
+            std::ofstream outFile(currentEditingFilePath);
             if (outFile.is_open()) {
                 outFile << textBuffer;
                 outFile.close();
+                std::cout << "File saved: " << currentEditingFilePath << std::endl;
             }
             else {
-                std::cerr << "Failed to open file for writing: " << filePath << std::endl;
+                std::cerr << "Failed to open file for writing: " << currentEditingFilePath << std::endl;
             }
         }
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 void DrawContentBrowser() {
@@ -86,7 +129,7 @@ void DrawContentBrowser() {
 
             std::ofstream outFile(newFileName);
             if (outFile.is_open()) {
-                outFile << ""; 
+                outFile << "";
                 outFile.close();
                 assets.push_back({ newFileName, fileTypes[fileType] });
             }
@@ -144,4 +187,7 @@ void DrawContentBrowser() {
     ImGui::Separator();
 
     ImGui::End();
+
+    // Отрисовка редактора Lua
+    DrawLuaEditor();
 }
