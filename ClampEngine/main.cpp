@@ -7,6 +7,7 @@
 #include "ContentBrowser.h"
 #include <iostream>
 #include "ClampEngine.cpp"
+#include "ResourceManager.h"
 
 #define MIN_WINDOW_WIDTH 100
 #define MIN_WINDOW_HEIGHT 100
@@ -16,6 +17,8 @@
 int main(void) {
     bool cameraLocked = false;
     float f = 0.0f;
+
+    ResourceManager resourceManager;
 
     // Initialize with a reasonable default size, ensuring the application is windowed
     windowWidth = 1600;
