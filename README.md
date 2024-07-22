@@ -1,6 +1,3 @@
-## Developers
-
-- [Kamil G. (Qwois)](GitHub Profile Link)
 
 # Branches
 
