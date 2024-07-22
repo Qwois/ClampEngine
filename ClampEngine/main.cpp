@@ -10,7 +10,6 @@
 
 #define MIN_WINDOW_WIDTH 100
 #define MIN_WINDOW_HEIGHT 100
-
 #define SIZE_PIXELS 16.0f
 
 
