@@ -6,8 +6,10 @@ Foobar is a Python library for dealing with word pluralization.
 
 Use the package manager [vcpkg](https://vcpkg.io/en/) to install raylib.
 
+# Navigate to the vcpkg directory, where vcpkg.exe will be located
+
 ```cmd
-vcpkg install raylib:x64-windows
+.\vcpkg.exe install raylib:x64-windows
 ```
 ## Build
 
