@@ -9,60 +9,52 @@
 #include "ClampEngine.cpp"
 #include "ResourceManager.h"
 #include "ProjectManager.h"
-
+#include <experimental/filesystem>
 
 #define MIN_WINDOW_WIDTH 100
 #define MIN_WINDOW_HEIGHT 100
 #define SIZE_PIXELS 16.0f
 
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
+namespace fs = std::experimental::filesystem;
+
 int main(void) {
     bool cameraLocked = false;
     float f = 0.0f;
-
-    RECT rect;
-    rect.left = 10;
-    rect.top = 40;
-    rect.right = 30;
-    rect.bottom = 60; // adjust these values as needed
 
     ResourceManager resourceManager;
     ProjectManager projectManager;
     Project currentProject;
 
-    // Initialize with a reasonable default size, ensuring the application is windowed
     windowWidth = 1600;
     windowHeight = 900;
 
-    // Create a windowed application with the ability to resize
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(windowWidth, windowHeight, "ClampEngine [Core] - 3D Scene");
 
-    // Set the minimum window size
     SetWindowMinSize(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
 
-    // Initialize the ImGui context with Raylib
     rlImGuiSetup(true);
 
     SetTargetFPS(60);
 
-    // Initialize background color
     Color backgroundColor = { 255, 255, 255, 255 }; // Default gray color
     ImVec4 imGuiColor = ImVec4(backgroundColor.r / 255.0f, backgroundColor.g / 255.0f, backgroundColor.b / 255.0f, backgroundColor.a / 255.0f);
 
-    // Initialize a new scene if no scenes exist
     if (scenes.empty()) {
         CreateNewScene();
     }
 
-    // Загрузить проекты
     LoadAssets();
 
+    char projectName[128] = "New Project";
+    char projectPath[256] = "./projects";
+
     while (!WindowShouldClose()) {
-        // Update the window width and height dynamically
         windowWidth = GetScreenWidth();
         windowHeight = GetScreenHeight();
 
-        // Ensure the window size does not fall below the minimum constraints
         if (windowWidth < MIN_WINDOW_WIDTH || windowHeight < MIN_WINDOW_HEIGHT) {
             SetWindowSize(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         }
@@ -82,7 +74,7 @@ int main(void) {
             UpdateCamera(&scenes[currentSceneIndex].camera, CAMERA_FREE);
         }
 
-        if (IsKeyPressed(KEY_SPACE) && currentSceneIndex != -1) {
+        if (IsKeyPressed(KEY_O) && currentSceneIndex != -1) {
             scenes[currentSceneIndex].camera.position = scenes[currentSceneIndex].modelPosition;
         }
 
@@ -97,13 +89,10 @@ int main(void) {
 
         BeginDrawing();
 
-        // Clear background with the selected color
         ClearBackground(backgroundColor);
 
-        HDC hdc = GetDC(NULL); // get the device context for the entire screen
         if (scenes.empty()) {
-            DrawText(hdc, L"No scenes available. Click the + tab to create a new scene.", -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER); // note the changes
-            ReleaseDC(NULL, hdc); // release the device context
+            DrawText("No scenes available. Click the + tab to create a new scene.", 10, 40, 20, DARKGRAY);
         }
         else {
             DrawTabs();
@@ -114,25 +103,20 @@ int main(void) {
 
         rlImGuiBegin();
 
-        // Main ImGui Window
         ImGui::Begin("ImGui Window");
 
-        // Color editor
         if (ImGui::ColorEdit3("Background Color", (float*)&imGuiColor)) {
-            // Update background color when changed
             backgroundColor.r = (unsigned char)(imGuiColor.x * 255);
             backgroundColor.g = (unsigned char)(imGuiColor.y * 255);
             backgroundColor.b = (unsigned char)(imGuiColor.z * 255);
             backgroundColor.a = (unsigned char)(imGuiColor.w * 255);
         }
 
-        // Checkboxes
-        bool show_demo_window = false;
+                bool show_demo_window = false;
         ImGui::Checkbox("Show Demo Window", &show_demo_window);
         bool enable_feature = true;
         ImGui::Checkbox("Enable Feature", &enable_feature);
 
-        // Buttons
         if (ImGui::Button("Import Model")) {
             LoadModelFromFile(scenes[currentSceneIndex]);
             printf("Model import: true");
@@ -144,22 +128,18 @@ int main(void) {
             LoadTextureFromFile(scenes[currentSceneIndex]);
         }
 
-        // Text input
         char text[128] = "Type here...";
         ImGui::InputText("Find method in Clamp Engine", text, IM_ARRAYSIZE(text));
 
-        // Combo box
         const char* items[] = { "Item 1", "Item 2", "Item 3" };
         static int item_current = 0;
         ImGui::Combo("Test Case", &item_current, items, IM_ARRAYSIZE(items));
 
-        // Radio buttons
         int selected = 0;
         ImGui::RadioButton("Window Mode", &selected, 0);
         ImGui::SameLine();
         ImGui::RadioButton("Fullscreen Mode", &selected, 1);
 
-        // Dropdown (Tree nodes)
         if (ImGui::TreeNode("Settings")) {
             ImGui::Checkbox("Enable Shadows", &enable_feature);
             ImGui::SliderFloat("Shadow Intensity", &f, 0.0f, 1.0f);
@@ -172,24 +152,20 @@ int main(void) {
             ImGui::TreePop();
         }
 
-        // Progress bar
-        float progress = 0.67f;  // Completion percentage
+        float progress = 0.67f;  
         ImGui::ProgressBar(progress, ImVec2(0.0f, 0.0f), "Loading");
 
         ImGui::End();
 
-        // Outliner windows
-        const float outlinerWidth = 250.0f;  // Width of each outliner window
-        const float outlinerHeight = 300.0f; // Height of each outliner window
+        const float outlinerWidth = 250.0f;
+        const float outlinerHeight = 300.0f;
 
-        // First Outliner window
         ImGui::SetNextWindowPos(ImVec2(windowWidth - outlinerWidth, 0), ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(outlinerWidth, windowHeight / 2), ImGuiCond_Always);
         ImGui::Begin("Outliner 1", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         ImGui::Text("Content of Outliner 1");
         ImGui::End();
 
-        // Second Outliner window
         ImGui::SetNextWindowPos(ImVec2(windowWidth - outlinerWidth, windowHeight / 2), ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(outlinerWidth, windowHeight / 3.5f), ImGuiCond_Always);
         ImGui::Begin("Outliner 2", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
@@ -202,22 +178,43 @@ int main(void) {
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
                 if (ImGui::MenuItem("Create Project")) {
-                    // Implement a function to get project name and path from user input
-                    std::string name = "New Project";  // Get this from user input
-                    std::string path = "./projects";   // Get this from a file dialog or input
-                    currentProject = projectManager.CreateProject(name, path);
+                    ImGui::OpenPopup("Create New Project");
                 }
                 if (ImGui::MenuItem("Save Project")) {
-                    projectManager.SaveProjectConfig(currentProject);
+                    if (!currentProject.name.empty()) {
+                        projectManager.SaveProjectConfig(currentProject);
+                    }
+                    else {
+                        std::cerr << "No project loaded to save.\n";
+                    }
                 }
                 if (ImGui::MenuItem("Load Project")) {
-                    // Implement a function to get project path from user input
-                    std::string path = "./projects"; // Get this from a file dialog
+                    std::string path = "./projects";
                     currentProject = projectManager.LoadProject(path);
                 }
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
+        }
+
+        // Create New Project Popup
+        if (ImGui::BeginPopupModal("Create New Project", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::InputText("Project Name", projectName, IM_ARRAYSIZE(projectName));
+            ImGui::InputText("Project Path", projectPath, IM_ARRAYSIZE(projectPath));
+
+            if (ImGui::Button("Create")) {
+                fs::create_directories(projectPath);
+                currentProject = projectManager.CreateProject(projectName, projectPath);
+                printf("INFO: ANUS");
+                if (!currentProject.name.empty()) {
+                    ImGui::CloseCurrentPopup();
+                }
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel")) {
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
         }
 
         rlImGuiEnd();
