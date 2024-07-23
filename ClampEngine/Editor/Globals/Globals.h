@@ -2,7 +2,7 @@
 #define GLOBALS_H
 
 #include <vector>
-#include "Scene.h"
+#include "../Scene/Scene.h"
 
 extern std::vector<Scene> scenes;
 extern int currentSceneIndex;

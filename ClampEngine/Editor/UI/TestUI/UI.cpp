@@ -1,8 +1,8 @@
 #include "UI.h"
 #include <raylib.h>
-#include "ClampEngine.h"
-#include "Scene.h"
-#include "Globals.h"
+#include "../../ClampEngine/ClampEngine.h"
+#include "../../Scene/Scene.h"
+#include "../../../Editor/Globals/Globals.h"
 
 void DrawTabs() {
     const int tabWidth = 130;

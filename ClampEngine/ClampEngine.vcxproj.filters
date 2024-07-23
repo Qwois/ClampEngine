@@ -15,97 +15,92 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClampEngine.cpp">
+    <ClCompile Include="Editor\ClampEngine\ClampEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
+    <ClCompile Include="Editor\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp">
+    <ClCompile Include="Editor\UI\TestUI\UI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Editor\Main\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Globals.cpp">
+    <ClCompile Include="Editor\Globals\Globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VectorUtils.cpp">
+    <ClCompile Include="Utils\Vector\VectorUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rlImGui.cpp">
+    <ClCompile Include="RlImGui\rlImGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ContentBrowser.cpp">
+    <ClCompile Include="Editor\ContentBrowser\ContentBrowser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
+    <ClCompile Include="ResourceManager\ResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\UI\ProjectMenuTop\ProjectMenuTop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClampEngine.h">
+    <ClInclude Include="Editor\ClampEngine\ClampEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
+    <ClInclude Include="Editor\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI.h">
+    <ClInclude Include="Editor\UI\TestUI\UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Globals.h">
+    <ClInclude Include="Editor\Globals\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VectorUtils.h">
+    <ClInclude Include="Utils\Vector\VectorUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imgui_impl_raylib.h">
+    <ClInclude Include="RlImGui\imgui_impl_raylib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rlImGui.h">
+    <ClInclude Include="RlImGui\rlImGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rlImGuiColors.h">
+    <ClInclude Include="RlImGui\rlImGuiColors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="extras\FA6FreeSolidFontData.h">
+    <ClInclude Include="Extras\FA6FreeSolidFontData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="extras\IconsFontAwesome6.h">
+    <ClInclude Include="Extras\IconsFontAwesome6.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ContentBrowser.h">
+    <ClInclude Include="Editor\ContentBrowser\ContentBrowser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="ResourceManager\ResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
+    <ClInclude Include="Project\Manager\ProjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource2.h">
+    <ClInclude Include="Editor\UI\ProjectMenuTop\ProjectMenuTop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
+    <ClInclude Include="..\..\Downloads\json (1).hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlohmann\json.hpp">
+    <ClInclude Include="After\nlohmann\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="UbuntuRegular.ttf" />
+    <Font Include="Utils\Fonts\UbuntuRegular.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="extras\FontAwsome_LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ClampEngine.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <Text Include="Extras\FontAwsome_LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Downloads\clamper.ico">

@@ -1,5 +1,5 @@
 #include "ClampEngine.h"
-#include "Globals.h"
+#include "../Globals/Globals.h"
 
 #if defined(PLATFORM_DESKTOP)
 #define GLSL_VERSION 330

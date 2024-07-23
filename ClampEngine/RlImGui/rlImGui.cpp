@@ -39,7 +39,7 @@
 #include <limits>
 
 #ifndef NO_FONT_AWESOME
-#include "extras/FA6FreeSolidFontData.h"
+#include "../Extras/IconsFontAwesome6.h"
 #endif
 
 static ImGuiMouseCursor CurrentMouseCursor = ImGuiMouseCursor_COUNT;
