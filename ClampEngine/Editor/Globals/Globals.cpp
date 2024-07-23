@@ -1,15 +1,15 @@
-#include "Globals.h"
+#include "../Globals/Globals.h"
 #include <raylib.h>
 #include "tinyfiledialogs/tinyfiledialogs.h"
 #include <iostream>
 
+// Initialize global variables
 std::vector<Scene> scenes;
 int currentSceneIndex = 0;
 int windowWidth = 1600; // Default width
 int windowHeight = 900; // Default height
 int grid_master = 100;
 
-// Implement functions
 void CleanupScene(std::vector<Scene>& scenes) {
     for (Scene& scene : scenes) {
         if (scene.modelLoaded) {
@@ -23,13 +23,13 @@ void CleanupScene(std::vector<Scene>& scenes) {
 }
 
 void CreateNewScene() {
-    scenes.emplace_back(); 
+    scenes.emplace_back();
     currentSceneIndex = static_cast<int>(scenes.size()) - 1;
 }
 
 void LoadModelFromFile(Scene& scene) {
     const char* filterPatterns[] = { "*.obj", "*.fbx" };
-    const char* filePath = tinyfd_openFileDialog("Load Model", "", 2, filterPatterns, "3D files", 1);
+    const char* filePath = tinyfd_openFileDialog("Load Model", "", 2, filterPatterns, "3D files", 0);
     if (filePath) {
         if (scene.modelLoaded) {
             UnloadModel(scene.model);
@@ -38,11 +38,15 @@ void LoadModelFromFile(Scene& scene) {
                 scene.textureLoaded = false;
             }
         }
+
         scene.model = LoadModel(filePath);
         scene.modelLoaded = scene.model.meshCount > 0;
 
         if (!scene.modelLoaded) {
             std::cerr << "Failed to load model from: " << filePath << std::endl;
+        }
+        else {
+            std::cout << "Model loaded successfully from: " << filePath << std::endl;
         }
     }
     else {
@@ -51,15 +55,28 @@ void LoadModelFromFile(Scene& scene) {
 }
 
 void LoadTextureFromFile(Scene& scene) {
-    const char* filterPatterns[] = { "*.png", "*.jpg" };
-    const char* texturePath = tinyfd_openFileDialog("Load Texture", "", 2, filterPatterns, "Image files", 1);
-    if (texturePath) {
+    const char* filePath = tinyfd_openFileDialog("Load Texture", "", 0, nullptr, nullptr, 0);
+    if (filePath) {
         if (scene.textureLoaded) {
             UnloadTexture(scene.texture);
         }
-        scene.texture = LoadTexture(texturePath);
-        scene.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = scene.texture;
-        scene.textureLoaded = true;
+
+        scene.texture = LoadTexture(filePath);
+        scene.textureLoaded = scene.texture.id != 0;
+
+        if (!scene.textureLoaded) {
+            std::cerr << "Failed to load texture from: " << filePath << std::endl;
+        }
+        else {
+            std::cout << "Texture loaded successfully from: " << filePath << std::endl;
+            if (scene.modelLoaded) {
+                // Assuming model uses the texture
+                SetMaterialTexture(&scene.model.materials[0], MATERIAL_MAP_DIFFUSE, scene.texture);
+            }
+        }
+    }
+    else {
+        std::cerr << "Texture load dialog was canceled." << std::endl;
     }
 }
 

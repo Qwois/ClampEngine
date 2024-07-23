@@ -4,7 +4,7 @@
 #include "tinyfiledialogs/tinyfiledialogs.h"
 #include <vector>
 #include "imgui.h"
-#include "Scene.h"
-#include "VectorUtils.h"
+#include "../Scene/Scene.h"
+#include "../../Utils/Vector/VectorUtils.h"
 
 void DrawTabs();

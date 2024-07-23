@@ -1,5 +1,5 @@
 #include "Scene.h"
-#include "VectorUtils.h"
+#include "../../Utils/Vector/VectorUtils.h"
 
 Scene::Scene()
     : modelLoaded(false), textureLoaded(false), modelPosition({ 0.0f, 0.0f, 0.0f }) {

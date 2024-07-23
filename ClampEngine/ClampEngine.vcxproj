@@ -130,45 +130,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ClampEngine.cpp" />
-    <ClCompile Include="ContentBrowser.cpp" />
-    <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="rlImGui.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="UI.cpp" />
-    <ClCompile Include="VectorUtils.cpp" />
+    <ClCompile Include="Editor\ClampEngine\ClampEngine.cpp" />
+    <ClCompile Include="Editor\ContentBrowser\ContentBrowser.cpp" />
+    <ClCompile Include="Editor\Globals\Globals.cpp" />
+    <ClCompile Include="Editor\Main\main.cpp" />
+    <ClCompile Include="Editor\UI\ProjectMenuTop\ProjectMenuTop.cpp" />
+    <ClCompile Include="ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="RlImGui\rlImGui.cpp" />
+    <ClCompile Include="Editor\Scene\Scene.cpp" />
+    <ClCompile Include="Editor\UI\TestUI\UI.cpp" />
+    <ClCompile Include="Utils\Vector\VectorUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClampEngine.h" />
-    <ClInclude Include="ContentBrowser.h" />
-    <ClInclude Include="extras\FA6FreeSolidFontData.h" />
-    <ClInclude Include="extras\IconsFontAwesome6.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="imgui_impl_raylib.h" />
-    <ClInclude Include="nlohmann\json.hpp" />
-    <ClInclude Include="ProjectManager.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="resource2.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="rlImGui.h" />
-    <ClInclude Include="rlImGuiColors.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="UI.h" />
-    <ClInclude Include="VectorUtils.h" />
+    <ClInclude Include="..\..\Downloads\json (1).hpp" />
+    <ClInclude Include="After\nlohmann\json.hpp" />
+    <ClInclude Include="Editor\ClampEngine\ClampEngine.h" />
+    <ClInclude Include="Editor\ContentBrowser\ContentBrowser.h" />
+    <ClInclude Include="Extras\FA6FreeSolidFontData.h" />
+    <ClInclude Include="Extras\IconsFontAwesome6.h" />
+    <ClInclude Include="Editor\Globals\Globals.h" />
+    <ClInclude Include="RlImGui\imgui_impl_raylib.h" />
+    <ClInclude Include="Project\Manager\ProjectManager.h" />
+    <ClInclude Include="Editor\UI\ProjectMenuTop\ProjectMenuTop.h" />
+    <ClInclude Include="ResourceManager\ResourceManager.h" />
+    <ClInclude Include="RlImGui\rlImGui.h" />
+    <ClInclude Include="RlImGui\rlImGuiColors.h" />
+    <ClInclude Include="Editor\Scene\Scene.h" />
+    <ClInclude Include="Editor\UI\TestUI\UI.h" />
+    <ClInclude Include="Utils\Vector\VectorUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="UbuntuRegular.ttf">
+    <Font Include="Utils\Fonts\UbuntuRegular.ttf">
       <DeploymentContent>true</DeploymentContent>
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="extras\FontAwsome_LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ClampEngine.rc" />
+    <Text Include="Extras\FontAwsome_LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Downloads\clamper.ico" />
