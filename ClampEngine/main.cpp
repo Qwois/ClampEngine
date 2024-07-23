@@ -95,7 +95,6 @@ int main(void) {
             DrawText("No scenes available. Click the + tab to create a new scene.", 10, 40, 20, DARKGRAY);
         }
         else {
-            DrawTabs();
             if (currentSceneIndex >= 0 && currentSceneIndex < scenes.size()) {
                 UpdateAndDraw(scenes[currentSceneIndex]);
             }
@@ -103,30 +102,32 @@ int main(void) {
 
         rlImGuiBegin();
 
-        ImGui::Begin("ImGui Window");
+        ImGui::Begin("Tools-Menu");
 
-        if (ImGui::ColorEdit3("Background Color", (float*)&imGuiColor)) {
+        if (ImGui::ColorEdit4("Background Color", (float*)&imGuiColor)) {
             backgroundColor.r = (unsigned char)(imGuiColor.x * 255);
             backgroundColor.g = (unsigned char)(imGuiColor.y * 255);
             backgroundColor.b = (unsigned char)(imGuiColor.z * 255);
             backgroundColor.a = (unsigned char)(imGuiColor.w * 255);
         }
 
-                bool show_demo_window = false;
-        ImGui::Checkbox("Show Demo Window", &show_demo_window);
         bool enable_feature = true;
-        ImGui::Checkbox("Enable Feature", &enable_feature);
+
+        ImGui::Text("Default position: 0.0, 10.0, 10.0");
+        if (ImGui::Button("Zero camera-positon")) {
+            scenes[currentSceneIndex].camera.position = scenes[currentSceneIndex].modelPosition;
+        }
 
         if (ImGui::Button("Import Model")) {
             LoadModelFromFile(scenes[currentSceneIndex]);
             printf("Model import: true");
         }
 
-        ImGui::SameLine();
-
         if (ImGui::Button("Import Texture")) {
             LoadTextureFromFile(scenes[currentSceneIndex]);
         }
+
+        ImGui::SliderInt("Grid", &grid_master, 0, 1000, "%10");
 
         char text[128] = "Type here...";
         ImGui::InputText("Find method in Clamp Engine", text, IM_ARRAYSIZE(text));

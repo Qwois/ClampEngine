@@ -8,6 +8,7 @@ extern std::vector<Scene> scenes;
 extern int currentSceneIndex;
 extern int windowWidth;
 extern int windowHeight;
+extern int grid_master;
 
 void CleanupScene(std::vector<Scene>& scenes);
 void CreateNewScene();

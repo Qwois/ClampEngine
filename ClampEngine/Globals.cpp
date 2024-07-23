@@ -7,6 +7,7 @@ std::vector<Scene> scenes;
 int currentSceneIndex = 0;
 int windowWidth = 1600; // Default width
 int windowHeight = 900; // Default height
+int grid_master = 100;
 
 // Implement functions
 void CleanupScene(std::vector<Scene>& scenes) {
@@ -67,7 +68,7 @@ void UpdateAndDraw(Scene& scene) {
     if (scene.modelLoaded) {
         DrawModel(scene.model, scene.modelPosition, 1.0f, WHITE);
     }
-    DrawGrid(100, 1.0f);
+    DrawGrid(grid_master, 1.0f);
     EndMode3D();
 
     DrawText("Press L to load a model", 10, 40, 20, DARKGRAY);
