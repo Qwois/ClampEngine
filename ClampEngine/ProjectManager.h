@@ -7,9 +7,9 @@
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
-#include <windows.h>  // Include for UUID generation on Windows
-#include <rpc.h>      // Include for CoCreateGuid and UuidToString
+#include <random>
 
+// Structure to represent a project
 struct Project {
     std::string name;
     std::string id;
@@ -21,6 +21,12 @@ public:
     ProjectManager() {}
 
     Project CreateProject(const std::string& name, const std::string& path) {
+        // Check if the project already exists
+        if (ProjectExists(path)) {
+            std::cerr << "Project already exists at this path.\n";
+            return {}; // Return an empty project
+        }
+
         Project project;
         project.name = name;
         project.id = GenerateUUID();
@@ -70,16 +76,23 @@ public:
 
 private:
     std::string GenerateUUID() {
-        UUID uuid;
-        UuidCreate(&uuid);
+        static const char characters[] =
+            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        std::random_device rd;
+        std::mt19937 generator(rd());
+        std::uniform_int_distribution<int> distribution(0, sizeof(characters) - 2);
 
-        RPC_CSTR uuidStr;
-        UuidToStringA(&uuid, &uuidStr);
+        std::string uuid;
+        for (int i = 0; i < 16; ++i) {
+            uuid += characters[distribution(generator)];
+        }
 
-        std::string result(reinterpret_cast<char*>(uuidStr));
+        return uuid;
+    }
 
-        RpcStringFreeA(&uuidStr);
-        return result;
+    bool ProjectExists(const std::string& path) {
+        std::ifstream file(path + "/project.clampfile");
+        return file.good();
     }
 };
 
