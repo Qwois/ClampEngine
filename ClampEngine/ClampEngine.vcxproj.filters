@@ -45,6 +45,9 @@
     <ClCompile Include="Editor\UI\ProjectMenuTop\ProjectMenuTop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Editor\ModelImporter\ModelImporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor\ClampEngine\ClampEngine.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="After\nlohmann\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\ModelImporter\ModelImporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
