@@ -1,79 +1,99 @@
 #include "ProjectMenuTop.h"
 #include "../../../Project/Manager/ProjectManager.h"
+#include "imgui.h"
+#include <iostream>
 
 ProjectManager projectManager;
 Project currentProject;
 
-bool showCreateProjectPopup = false;
-
 char projectName[128] = "New Project";
-char projectPath[256] = "./projects";
+char projectPath[256] = "./projects/NewProject";
 
-namespace fs = std::experimental::filesystem;
+bool showCreateProjectPopup = false;
+bool themeWindowOpen = false;
 
 
-void ToolBarMain()
-{
+void ShowMainMenuBar() {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Create Project")) {
-                std::cout << "INFO: Open Create New Project Popup" << std::endl; // Debug statement
+                std::cout << "Create Project menu item selected\n";
                 showCreateProjectPopup = true;
+                ImGui::OpenPopup("Create New Project");
             }
             if (ImGui::MenuItem("Save Project")) {
                 if (!currentProject.name.empty()) {
                     projectManager.SaveProjectConfig(currentProject);
-                    std::cout << "INFO: Project saved successfully." << std::endl;
+                    std::cout << "INFO: Project saved successfully.\n";
                 }
                 else {
                     std::cerr << "ERROR: No project loaded to save.\n";
                 }
             }
             if (ImGui::MenuItem("Load Project")) {
-                std::string path = "./projects";
-                currentProject = projectManager.LoadProject(path);
-                std::cout << "INFO: Project loaded successfully." << std::endl;
+                currentProject = projectManager.LoadProject("./projects/NewProject"); 
+                if (!currentProject.name.empty()) {
+                    std::cout << "INFO: Project loaded successfully.\n";
+                }
             }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
+
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("Options")) {
+            if (ImGui::MenuItem("Theme")) {
+                themeWindowOpen = true;
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+
+    if (themeWindowOpen) {
+        if (ImGui::Begin("ThemeWindow", &themeWindowOpen)) {
+            ImGui::Text("Pick theme:");
+            if (ImGui::Button("Light Theme")) {
+                ImGui::StyleColorsLight();
+            }
+
+            if (ImGui::Button("Dark Theme")) {
+                ImGui::StyleColorsDark();
+            }
+
+            if (ImGui::Button("Classic Theme")) {
+                ImGui::StyleColorsClassic();
+            }
+        }
+        ImGui::End();
+    }
 }
 
-void PopCreateProjectMenu()
-{
-    if (showCreateProjectPopup) {
-        if (ImGui::BeginPopupModal("Create New Project", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::InputText("Project Name", projectName, IM_ARRAYSIZE(projectName));
-            ImGui::InputText("Project Path", projectPath, IM_ARRAYSIZE(projectPath));
+void ShowCreateProjectPopup() {
+    if (ImGui::BeginPopupModal("Create New Project", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::InputText("Project Name", projectName, IM_ARRAYSIZE(projectName));
+        ImGui::InputText("Project Path", projectPath, IM_ARRAYSIZE(projectPath));
 
-            if (ImGui::Button("Create")) {
-                std::cout << "INFO: Attempting to create project." << std::endl;
-                try {
-                    fs::create_directories(projectPath);
-                    if (!fs::exists(projectPath)) {
-                        std::cerr << "ERROR: Failed to create directory." << std::endl;
-                    }
-                    else {
-                        std::cout << "INFO: Directory created successfully." << std::endl;
-                    }
-                    currentProject = projectManager.CreateProject(projectName, projectPath);
-                    std::cout << "INFO: Project created successfully." << std::endl;
-                }
-                catch (const std::exception& e) {
-                    std::cerr << "ERROR: Exception during directory creation: " << e.what() << std::endl;
-                }
-
-                if (!currentProject.name.empty()) {
-                    std::cout << "INFO: Closing Create New Project Popup." << std::endl;
-                    showCreateProjectPopup = false;
-                }
+        if (ImGui::Button("Create")) {
+            std::string path(projectPath);
+            if (path.back() != '/') {
+                path += '/';
             }
-            ImGui::SameLine();
-            if (ImGui::Button("Cancel")) {
+            path += projectName;
+
+            currentProject = projectManager.CreateProject(projectName, path);
+            if (!currentProject.name.empty()) {
+                std::cout << "INFO: Project created successfully.\n";
                 showCreateProjectPopup = false;
+                ImGui::CloseCurrentPopup();
             }
-            ImGui::EndPopup();
         }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel")) {
+            showCreateProjectPopup = false;
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
     }
 }

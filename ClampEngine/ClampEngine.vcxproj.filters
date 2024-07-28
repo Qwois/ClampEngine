@@ -89,22 +89,16 @@
     <ClInclude Include="Editor\UI\ProjectMenuTop\ProjectMenuTop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Downloads\json (1).hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="After\nlohmann\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Utils\Fonts\UbuntuRegular.ttf" />
+    <Font Include="UbuntuRegular.ttf" />
+    <Font Include="ascii.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Extras\FontAwsome_LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\Downloads\clamper.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>
