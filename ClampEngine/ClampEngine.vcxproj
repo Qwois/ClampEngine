@@ -142,7 +142,6 @@
     <ClCompile Include="Utils\Vector\VectorUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Downloads\json (1).hpp" />
     <ClInclude Include="After\nlohmann\json.hpp" />
     <ClInclude Include="Editor\ClampEngine\ClampEngine.h" />
     <ClInclude Include="Editor\ContentBrowser\ContentBrowser.h" />
@@ -160,15 +159,14 @@
     <ClInclude Include="Utils\Vector\VectorUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="ascii.ttf" />
+    <Font Include="UbuntuRegular.ttf" />
     <Font Include="Utils\Fonts\UbuntuRegular.ttf">
       <DeploymentContent>true</DeploymentContent>
     </Font>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Extras\FontAwsome_LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\Downloads\clamper.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

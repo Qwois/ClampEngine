@@ -8,6 +8,13 @@
 #include <fstream>
 #include <iostream>
 #include <random>
+#include <experimental/filesystem> // Include filesystem for directory creation
+
+
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
+// Namespace alias for filesystem
+namespace fs = std::experimental::filesystem;
 
 // Structure to represent a project
 struct Project {
@@ -21,10 +28,9 @@ public:
     ProjectManager() {}
 
     Project CreateProject(const std::string& name, const std::string& path) {
-        // Check if the project already exists
         if (ProjectExists(path)) {
-            std::cerr << "Project already exists at this path.\n";
-            return {}; // Return an empty project
+            std::cerr << "ERROR: Project already exists at this path.\n";
+            return {};
         }
 
         Project project;
@@ -32,8 +38,19 @@ public:
         project.id = GenerateUUID();
         project.path = path;
 
-        SaveProjectConfig(project);
+        // TODO: dead system
+        if (!fs::exists(path)) {
+            try {
+                fs::create_directories(path);
+                std::cout << "INFO: Directory created successfully.\n";
+            }
+            catch (const fs::filesystem_error& e) {
+                std::cerr << "ERROR: Unable to create directory: " << e.what() << "\n";
+                return {};
+            }
+        }
 
+        SaveProjectConfig(project);
         return project;
     }
 
@@ -43,13 +60,15 @@ public:
         j["id"] = project.id;
         j["path"] = project.path;
 
-        std::ofstream file(project.path + "/project.clampfile");
+        std::string filePath = project.path + "/project.clampfile";
+        std::ofstream file(filePath);
         if (file.is_open()) {
             file << j.dump(4);
             file.close();
+            std::cout << "INFO: Project file " << filePath << " saved successfully.\n";
         }
         else {
-            std::cerr << "Could not open file to save project configuration.\n";
+            std::cerr << "ERROR: Could not open file " << filePath << " to save project configuration.\n";
         }
     }
 
@@ -68,7 +87,7 @@ public:
             file.close();
         }
         else {
-            std::cerr << "Could not open project configuration file.\n";
+            std::cerr << "ERROR: Could not open project configuration file.\n";
         }
 
         return project;
@@ -86,7 +105,6 @@ private:
         for (int i = 0; i < 16; ++i) {
             uuid += characters[distribution(generator)];
         }
-
         return uuid;
     }
 

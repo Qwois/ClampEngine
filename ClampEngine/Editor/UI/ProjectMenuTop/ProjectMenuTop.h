@@ -1,9 +1,7 @@
-#pragma once
-#include "imgui.h"
-#include <experimental/filesystem>
-#include <iostream>
+#ifndef PROJECT_MENU_TOP_H
+#define PROJECT_MENU_TOP_H
 
-#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+void ShowMainMenuBar();
+void ShowCreateProjectPopup();
 
-void ToolBarMain();
-void PopCreateProjectMenu();
+#endif

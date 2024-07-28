@@ -36,6 +36,7 @@ int main(void) {
 
     rlImGuiSetup(true);
 
+
     SetTargetFPS(60);
 
     Color backgroundColor = { 255, 255, 255, 255 }; // Default gray color
@@ -145,11 +146,9 @@ int main(void) {
         ImGui::End();
 
         DrawContentBrowser();
-
-        // Add toolbar
         
-        ToolBarMain();
-        PopCreateProjectMenu();
+        ShowMainMenuBar();  // Main menu bar
+        ShowCreateProjectPopup();
 
         rlImGuiEnd();
 
