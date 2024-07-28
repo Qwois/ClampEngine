@@ -112,6 +112,7 @@ int main(void) {
         }
 
         bool enableShadows = true;
+        float camera_scene_position = 0.f;
 
         ImGui::Text("Default position: 0.0, 10.0, 10.0");
         if (ImGui::Button("Zero camera-position")) {
@@ -120,7 +121,7 @@ int main(void) {
 
         if (ImGui::Button("Import Model")) {
             scenes[currentSceneIndex].model = ImportModelWithDialog();
-            scenes[currentSceneIndex].modelLoaded = true; // Обновите статус загрузки модели
+            scenes[currentSceneIndex].modelLoaded = true;
         }
 
         if (ImGui::Button("Import Texture")) {

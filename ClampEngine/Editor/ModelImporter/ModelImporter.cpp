@@ -7,7 +7,6 @@
 #include "../../Utils/Vector/VectorUtils.h"
 #include "tinyfiledialogs/tinyfiledialogs.h"
 
-// Импорт модели с использованием Assimp
 Model ImportModel(const std::string& filePath) {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -17,36 +16,39 @@ Model ImportModel(const std::string& filePath) {
         return { 0 };
     }
 
-    aiMesh* mesh = scene->mMeshes[0];
-
     std::vector<Vector3> vertices;
-    for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-        aiVector3D vertex = mesh->mVertices[i];
-        vertices.push_back((InitVector3(vertex.x, vertex.y, vertex.z)));
-    }
-
     std::vector<Vector3> normals;
-    if (mesh->HasNormals()) {
-        for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-            aiVector3D normal = mesh->mNormals[i];
-            normals.push_back((InitVector3(normal.x, normal.y, normal.z)));
-        }
-    }
-
     std::vector<Vector2> texcoords;
-    if (mesh->mTextureCoords[0]) {
-        for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-            aiVector3D texcoord = mesh->mTextureCoords[0][i];
-            texcoords.push_back((InitVector2(texcoord.x, texcoord.y)));
-        }
-    }
-
     std::vector<unsigned int> indices;
-    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
-        aiFace face = mesh->mFaces[i];
-        for (unsigned int j = 0; j < face.mNumIndices; j++) {
-            indices.push_back(face.mIndices[j]);
+
+    unsigned int vertexOffset = 0;
+
+    for (unsigned int m = 0; m < scene->mNumMeshes; m++) {
+        aiMesh* mesh = scene->mMeshes[m];
+
+        for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D vertex = mesh->mVertices[i];
+            vertices.push_back(InitVector3(vertex.x, vertex.y, vertex.z));
+
+            if (mesh->HasNormals()) {
+                aiVector3D normal = mesh->mNormals[i];
+                normals.push_back(InitVector3(normal.x, normal.y, normal.z));
+            }
+
+            if (mesh->mTextureCoords[0]) {
+                aiVector3D texcoord = mesh->mTextureCoords[0][i];
+                texcoords.push_back(InitVector2(texcoord.x, texcoord.y));
+            }
         }
+
+        for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+            aiFace face = mesh->mFaces[i];
+            for (unsigned int j = 0; j < face.mNumIndices; j++) {
+                indices.push_back(face.mIndices[j] + vertexOffset);
+            }
+        }
+
+        vertexOffset += mesh->mNumVertices;
     }
 
     Mesh raylibMesh = { 0 };
@@ -81,7 +83,7 @@ Model ImportModel(const std::string& filePath) {
     Model model = LoadModelFromMesh(raylibMesh);
 
     if (scene->HasMaterials()) {
-        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        aiMaterial* material = scene->mMaterials[scene->mMeshes[0]->mMaterialIndex];
         aiColor4D color;
         if (aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &color) == AI_SUCCESS) {
             model.materials[0].maps[MATERIAL_MAP_DIFFUSE].color = {
@@ -114,7 +116,7 @@ Model ImportModelWithDialog() {
     }
     else {
         std::cerr << "Model import canceled or failed.\n";
-        return { 0 }; 
+        return { 0 };
     }
 }
 
