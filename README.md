@@ -29,6 +29,7 @@ Use the package manager [vcpkg](https://vcpkg.io/en/) to install raylib.
 ```cmd
 .\vcpkg.exe install raylib:x64-windows
 .\vcpkg.exe install tinyfiledialogs:x64-windows
+.\vcpkg.exe install assimp
 ```
 ## Build
 
