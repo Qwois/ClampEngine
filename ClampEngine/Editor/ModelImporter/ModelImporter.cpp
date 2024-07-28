@@ -14,19 +14,17 @@ Model ImportModel(const std::string& filePath) {
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cerr << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
-        return { 0 }; // Возвращаем пустую модель
+        return { 0 };
     }
 
-    aiMesh* mesh = scene->mMeshes[0];  // Используем только первый меш
+    aiMesh* mesh = scene->mMeshes[0];
 
-    // Создаём массив вершин
     std::vector<Vector3> vertices;
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         aiVector3D vertex = mesh->mVertices[i];
         vertices.push_back((InitVector3(vertex.x, vertex.y, vertex.z)));
     }
 
-    // Создаём массив нормалей
     std::vector<Vector3> normals;
     if (mesh->HasNormals()) {
         for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -35,7 +33,6 @@ Model ImportModel(const std::string& filePath) {
         }
     }
 
-    // Создаём массив текстурных координат
     std::vector<Vector2> texcoords;
     if (mesh->mTextureCoords[0]) {
         for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -44,7 +41,6 @@ Model ImportModel(const std::string& filePath) {
         }
     }
 
-    // Создаём массив индексов
     std::vector<unsigned int> indices;
     for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
@@ -99,12 +95,10 @@ Model ImportModel(const std::string& filePath) {
     return model;
 }
 
-// Импорт текстуры
 Texture2D ImportTexture(const std::string& filePath) {
     return LoadTexture(filePath.c_str());
 }
 
-// Функция для импорта модели через диалоговое окно
 Model ImportModelWithDialog() {
     const char* filters[] = { "*.fbx", "*.obj", "*.dae" };
     const char* filePath = tinyfd_openFileDialog(
@@ -120,11 +114,10 @@ Model ImportModelWithDialog() {
     }
     else {
         std::cerr << "Model import canceled or failed.\n";
-        return { 0 }; // Возвращаем пустую модель в случае отмены
+        return { 0 }; 
     }
 }
 
-// Функция для импорта текстуры через диалоговое окно
 Texture2D ImportTextureWithDialog() {
     const char* filters[] = { "*.png", "*.jpg", "*.bmp" };
     const char* filePath = tinyfd_openFileDialog(
@@ -140,6 +133,6 @@ Texture2D ImportTextureWithDialog() {
     }
     else {
         std::cerr << "Texture import canceled or failed.\n";
-        return { 0 }; // Возвращаем пустую текстуру в случае отмены
+        return { 0 };
     }
 }
