@@ -134,6 +134,7 @@
     <ClCompile Include="Editor\ContentBrowser\ContentBrowser.cpp" />
     <ClCompile Include="Editor\Globals\Globals.cpp" />
     <ClCompile Include="Editor\Main\main.cpp" />
+    <ClCompile Include="Editor\ModelImporter\ModelImporter.cpp" />
     <ClCompile Include="Editor\UI\ProjectMenuTop\ProjectMenuTop.cpp" />
     <ClCompile Include="ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="RlImGui\rlImGui.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="After\nlohmann\json.hpp" />
     <ClInclude Include="Editor\ClampEngine\ClampEngine.h" />
     <ClInclude Include="Editor\ContentBrowser\ContentBrowser.h" />
+    <ClInclude Include="Editor\ModelImporter\ModelImporter.h" />
     <ClInclude Include="Extras\FA6FreeSolidFontData.h" />
     <ClInclude Include="Extras\IconsFontAwesome6.h" />
     <ClInclude Include="Editor\Globals\Globals.h" />

@@ -30,6 +30,24 @@ void CreateNewScene() {
 void LoadModelFromFile(Scene& scene) {
     const char* filterPatterns[] = { "*.obj", "*.fbx" };
     const char* filePath = tinyfd_openFileDialog("Load Model", "", 2, filterPatterns, "3D files", 0);
+    if (!FileExists(filePath)) {
+        std::cerr << "File does not exist: " << filePath << std::endl;
+        return;
+    }
+
+    Model model = LoadModel(filePath);
+    if (model.meshCount > 0) {
+        std::cout << "Model loaded successfully. Mesh count: " << model.meshCount << std::endl;
+    }
+    else {
+        std::cerr << "No meshes found in model: " << filePath << std::endl;
+    }
+
+    for (int i = 0; i < model.meshCount; i++) {
+        std::cout << "Mesh " << i << " vertex count: " << model.meshes[i].vertexCount << std::endl;
+    }
+
+
     if (filePath) {
         if (scene.modelLoaded) {
             UnloadModel(scene.model);
@@ -40,13 +58,17 @@ void LoadModelFromFile(Scene& scene) {
         }
 
         scene.model = LoadModel(filePath);
-        scene.modelLoaded = scene.model.meshCount > 0;
+        if (scene.model.meshCount <= 0) {
+            std::cerr << "No meshes found in model: " << filePath << std::endl;
+            scene.modelLoaded = false;
+        }
 
         if (!scene.modelLoaded) {
             std::cerr << "Failed to load model from: " << filePath << std::endl;
         }
         else {
             std::cout << "Model loaded successfully from: " << filePath << std::endl;
+            std::cout << "Mesh count: " << scene.model.meshCount << std::endl;
         }
     }
     else {
@@ -69,8 +91,7 @@ void LoadTextureFromFile(Scene& scene) {
         }
         else {
             std::cout << "Texture loaded successfully from: " << filePath << std::endl;
-            if (scene.modelLoaded) {
-                // Assuming model uses the texture
+            if (scene.modelLoaded && scene.textureLoaded) {
                 SetMaterialTexture(&scene.model.materials[0], MATERIAL_MAP_DIFFUSE, scene.texture);
             }
         }

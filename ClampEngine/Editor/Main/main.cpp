@@ -11,6 +11,8 @@
 #include "../../Project/Manager/ProjectManager.h"
 #include <experimental/filesystem>
 #include "../UI/ProjectMenuTop/ProjectMenuTop.h"
+#include "../../Editor/ModelImporter/ModelImporter.h"
+#include "../../Editor/ModelImporter/ModelImporter.h"
 
 #define MIN_WINDOW_WIDTH 100
 #define MIN_WINDOW_HEIGHT 100
@@ -35,7 +37,6 @@ int main(void) {
     SetWindowMinSize(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
 
     rlImGuiSetup(true);
-
 
     SetTargetFPS(60);
 
@@ -118,13 +119,21 @@ int main(void) {
         }
 
         if (ImGui::Button("Import Model")) {
-            LoadModelFromFile(scenes[currentSceneIndex]);
-            std::cout << "Model import: true" << std::endl;
+            scenes[currentSceneIndex].model = ImportModelWithDialog();
+            scenes[currentSceneIndex].modelLoaded = true; // Обновите статус загрузки модели
         }
 
         if (ImGui::Button("Import Texture")) {
-            LoadTextureFromFile(scenes[currentSceneIndex]);
+            scenes[currentSceneIndex].texture = ImportTextureWithDialog();
+            if (scenes[currentSceneIndex].modelLoaded) {
+                SetMaterialTexture(
+                    &scenes[currentSceneIndex].model.materials[0],
+                    MATERIAL_MAP_DIFFUSE,
+                    scenes[currentSceneIndex].texture
+                );
+            }
         }
+
 
         ImGui::SliderInt("Grid", &grid_master, 0, 1000, "%d");
 
@@ -146,7 +155,7 @@ int main(void) {
         ImGui::End();
 
         DrawContentBrowser();
-        
+
         ShowMainMenuBar();  // Main menu bar
         ShowCreateProjectPopup();
 
