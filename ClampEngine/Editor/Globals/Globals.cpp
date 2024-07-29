@@ -76,6 +76,14 @@ void LoadModelFromFile(Scene& scene) {
     }
 }
 
+
+
+///
+/// 
+/// FULL CORRUPT CODE
+/// TODO: ADD CLEAR BUFFER MEMORY
+///
+
 void LoadTextureFromFile(Scene& scene) {
     const char* filePath = tinyfd_openFileDialog("Load Texture", "", 0, nullptr, nullptr, 0);
     if (filePath) {

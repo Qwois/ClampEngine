@@ -135,7 +135,6 @@ int main(void) {
             }
         }
 
-
         ImGui::SliderInt("Grid", &grid_master, 0, 1000, "%d");
 
         ImGui::End();
