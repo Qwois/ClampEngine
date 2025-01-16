@@ -1,0 +1,2 @@
+C:\MinGW\bin\ar.exe qc libgl3w.a CMakeFiles/gl3w.dir/external/gl3w/Source/gl3w.c.obj
+C:\MinGW\bin\ranlib.exe libgl3w.a

@@ -1,0 +1,2 @@
+C:\MinGW\bin\ar.exe qc libimgui_node_editor.a "CMakeFiles/imgui_node_editor.dir/external/imgui-node-editor/imgui_node_editor.cpp.obj" "CMakeFiles/imgui_node_editor.dir/external/imgui-node-editor/imgui_node_editor_api.cpp.obj" "CMakeFiles/imgui_node_editor.dir/external/imgui-node-editor/crude_json.cpp.obj" "CMakeFiles/imgui_node_editor.dir/external/imgui-node-editor/imgui_canvas.cpp.obj"
+C:\MinGW\bin\ranlib.exe libimgui_node_editor.a

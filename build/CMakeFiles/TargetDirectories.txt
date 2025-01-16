@@ -1,0 +1,7 @@
+C:/Users/kamil/ClampEngine/build/CMakeFiles/gl3w.dir
+C:/Users/kamil/ClampEngine/build/CMakeFiles/imgui.dir
+C:/Users/kamil/ClampEngine/build/CMakeFiles/imgui_node_editor.dir
+C:/Users/kamil/ClampEngine/build/CMakeFiles/application.dir
+C:/Users/kamil/ClampEngine/build/CMakeFiles/ClampEngine.dir
+C:/Users/kamil/ClampEngine/build/CMakeFiles/edit_cache.dir
+C:/Users/kamil/ClampEngine/build/CMakeFiles/rebuild_cache.dir

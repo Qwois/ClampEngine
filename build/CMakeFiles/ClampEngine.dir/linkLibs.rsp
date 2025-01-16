@@ -1,0 +1,1 @@
+  -LC:/Users/kamil/ClampEngine/external/DXSDK/lib/x64  libapplication.a libimgui.a libimgui_node_editor.a libgl3w.a -ld3d11 -ld3dx11 -ldxgi -ld3dcompiler -lopengl32 -lkernel32 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -lxinput -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
